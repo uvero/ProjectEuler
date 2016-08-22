@@ -61,6 +61,13 @@ class Fixnum
 		a.divby? self
 	end
 	
+	def palindrome?
+	  str = to_s
+	  str.reverse.eql?(str)
+	end
+	
+	alias :pal? :palindrome?
+	
 	private
 	def n
 	  self
