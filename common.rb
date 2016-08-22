@@ -114,10 +114,10 @@ end
 
 def solution &block
   t = Time.now
-  puts "Started #{t}"
+  puts "\aStarted #{t}"
   res = block.call
   diff = Time.now - t
-  puts "solution: #{res}\ntime: #{diff}"
+  puts "\asolution: #{res}\ntime: #{diff}"
 end
 alias :solve :solution
 
