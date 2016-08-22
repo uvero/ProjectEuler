@@ -21,6 +21,15 @@ module Enumerable
   def pairs arr, &block
     cross(arr,&block).flatten(1)
   end
+  
+  def take_while &block
+    return Enumerator.new do |en|
+      self.each do |item|
+        break unless block[item]
+        en << item
+      end
+    end
+  end
 end
 
 class Fixnum
@@ -68,9 +77,9 @@ end
 
 def gcd(*list)
   case list.length
-  when 0 raise "at least 1 argument required"
-  when 1 return list.first
-  when 2
+  when 0 then raise "at least 1 argument required"
+  when 1 then return list.first
+  when 2 then
     x, y = list
     return gcd_ext(x,y).first
   else
@@ -80,9 +89,9 @@ end
 
 def lcm(*list)
   case list.length
-   when 0 raise "at least 1 argument required"
-   when 1 return list.first
-   when 2
+   when 0 then raise "at least 1 argument required"
+   when 1 then return list.first
+   when 2 then
      x, y = list
      return (x*y)/(gcd_ext(x,y).first)
    else
@@ -105,7 +114,7 @@ end
 alias :solve :solution
 
 module Iterators
-	def self.ints
+	def Iterators.ints
 		return enum_for(:ints) unless block_given?
 		yield 0
 		i = 1
@@ -114,5 +123,22 @@ module Iterators
 			yield -i
 			i += 1
 		end
+	end
+	
+	def Iterators.fib &block
+	  return enum_for(:fib) if block.nil?
+	  #syit: should yield indices too
+	  case block.parameters.length
+	  when 1 then syit = false
+	  when 2 then syit = true
+	  else raise "must have either 1 or 2 argument (f_n or f_n, n)"
+	  end
+	  yield 0,0
+	  yield 1,1
+	  prv, cur, ind = 1, 2, 2
+	  loop do
+  	  block[syit ? [cur, ind] : cur] 
+  	  prv, cur, ind = cur, cur + prv, ind + 1
+	  end
 	end
 end
