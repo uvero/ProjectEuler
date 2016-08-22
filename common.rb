@@ -114,6 +114,7 @@ end
 
 def solution &block
   t = Time.now
+  puts "Started #{t}"
   res = block.call
   diff = Time.now - t
   puts "solution: #{res}\ntime: #{diff}"
