@@ -17,7 +17,7 @@ class CollatzCulator
   def [] num
     r = @table[num]
     return r if r
-    return 1 + self[CollatzCulator.collatz(num)]
+    return 1 + self[CollatzCulator.collatz(num)].tap{|x| @table[num] = x }
   end
 end
 
@@ -28,5 +28,3 @@ finder = CollatzCulator.new()
 solve do
   (1..LIM).max_by{|x| finder[x] }
 end
-
-#surprisingly, this is about twice as long as the bruteforce one! IDK
