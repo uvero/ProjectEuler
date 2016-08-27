@@ -1,6 +1,4 @@
-#Find the difference between the sum of the squares of the
-#first one hundred natural numbers and the square of the sum.
-
+#What is the 10 001st prime number?
 require './common.rb'
 require './primes_sieve'
 include Math
