@@ -37,10 +37,8 @@ class Fixnum
 	  (1..self).product
 	end
 	
-	alias :'!' :fact
-	
 	def c k
-	  fact / (k.! * (self-k).!)
+	  fact / (k.fact * (self-k).fact)
 	end
 	
 	def map &block
@@ -147,6 +145,28 @@ module Iterators
 	  loop do
   	  block[syit ? [cur, ind] : cur] 
   	  prv, cur, ind = cur, cur + prv, ind + 1
+	  end
+	end
+	
+	def Iterators.pairs_natural_without_order &block
+	  return enum_for(:pairs_natural_without_order) if block.nil?
+	  i = 1
+	  loop do
+	    for j in 1..i do
+	      yield [i,j]
+	    end
+	    i += 1
+	  end
+	end
+	
+	def Iterators.pyth_including_non_primitive &block
+	  return enum_for(:fib) if block.nil?
+	  for t,s in Iterators.pairs_natural_without_order do
+	    next if s == t
+	    a = t**2 - s**2
+	    b = 2*s*t
+	    c = t**2 + s**2
+	    yield [a,b,c]
 	  end
 	end
 end
