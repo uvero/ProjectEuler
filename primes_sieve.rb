@@ -70,9 +70,9 @@ class PrimeSieve
   def inspect
     "PrimeSieve[size: #{size}]"
   end
-  
+
   alias :to_s :inspect
-  
+
   #region static
   @@instance = PrimeSieve.new(3)
 
@@ -100,5 +100,38 @@ class PrimeSieve
 
   def PrimeSieve.count_divisors(num)
     PrimeSieve.compose(num).map{|x,y| y+1}.inject(1) {|s,x| s *= x}
+  end
+
+  def PrimeSieve.divisors num
+    raise "must be positive" if num <= 0
+    return [1] if num == 1
+    ret = []
+
+    com = PrimeSieve.compose(num)
+
+    #iterate over all n-tuples of size up to mx
+    mx = 1 + com.map{ |x| x[1] }.max
+    n = com.length
+    return (0...mx).map{|i| com.first.first ** i} if n == 1
+    for i in (0..(n**mx)) do
+      k = i
+      tuple = []
+      n.times do
+        tuple << i%mx
+        i /= mx
+      end
+
+      #check if tuple is valid
+      next if (0...n).any? { |i| tuple[i] > com[i][1] }
+
+      #use tuple
+      temp_comp = (0...n).map{ |i| [com[i][0], tuple[i]] }
+      ret << PrimeSieve.from_composition(temp_comp)
+    end
+    ret.uniq
+  end
+
+  def PrimeSieve.from_composition(comp)
+    comp.map{|p,t| p**t }.inject(1){|s,x| s*= x}
   end
 end
