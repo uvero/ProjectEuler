@@ -82,8 +82,8 @@ class PrimeSieve
 
   def PrimeSieve.compose_without_exponents(num)
     lim = Math::sqrt(num).to_i
-    instance.expand
-    sieve.range.select{ |x| instance[x] and num % x == 0 }
+    instance.expand(lim)
+    (0..lim).select{ |x| instance[x] and num % x == 0 }
   end
 
   def PrimeSieve.compose(num)
@@ -98,6 +98,6 @@ class PrimeSieve
   end
 
   def PrimeSieve.count_divisors(num)
-    PrimeSieve.compose(num).map{|x,y| y+1}.inject(:*)
+    PrimeSieve.compose(num).map{|x,y| y+1}.inject(1) {|s,x| s *= x}
   end
 end
