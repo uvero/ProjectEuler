@@ -13,6 +13,6 @@ LIM = 10_001
 
 solve do
   bound = rosser_theorem_upper_bound(LIM)
-  sieve = PrimeSieve.new(bound)
+  sieve = PrimeSieve.instance.expand(bound)
   sieve.primes[LIM - 1]
 end
