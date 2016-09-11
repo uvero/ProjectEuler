@@ -81,9 +81,10 @@ class PrimeSieve
   end
 
   def PrimeSieve.compose_without_exponents(num)
-    lim = Math::sqrt(num).to_i
+    return [num] if instance[num]
+    lim = num/2
     instance.expand(lim)
-    (0..lim).select{ |x| instance[x] and num % x == 0 }
+    return (0..lim).select{ |x| instance[x] and num % x == 0 }
   end
 
   def PrimeSieve.compose(num)
