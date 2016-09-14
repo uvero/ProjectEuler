@@ -2,6 +2,13 @@ class Numeric
 	def whole?
 		self%1 == 0
 	end
+	
+	def digsum(base=10)
+	  raise "must be an integer" unless whole?
+	  sum, num = 0, self.to_i
+	  sum, num = sum+(num%base), num/base until num.zero?
+	  sum
+	end
 end
 
 module Enumerable
