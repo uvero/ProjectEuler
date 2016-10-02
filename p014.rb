@@ -3,28 +3,16 @@
 #NOTE: Once the chain starts the terms are allowed to go above one million.
 
 require './common.rb'
+require './remembering_recursion.rb'
 
-class CollatzCulator
-  def CollatzCulator.collatz num
-    num.even? ? num/2 : 3*num+1 
-  end
-  
-  def initialize
-    @table = Hash.new
-    @table[1] = 1
-  end
-  
-  def [] num
-    r = @table[num]
-    return r if r
-    return 1 + self[CollatzCulator.collatz(num)].tap{|x| @table[num] = x }
-  end
+def nxt_collatz num
+  num.even? ? num/2 : 3*num+1
 end
 
-
 LIM = 1_000_000
-
-finder = CollatzCulator.new()
 solve do
-  (1..LIM).max_by{|x| finder[x] }
+  chain_length = RememberingRecursion.new(1 => 0) { |n, rec|
+   1 + rec[nxt_collatz(n)] 
+  }
+  (1..LIM).max_by{|x| chain_length[x] }
 end
